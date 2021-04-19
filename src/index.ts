@@ -1,18 +1,17 @@
 import playwright from 'playwright';
 
 import { sendSmsNotification } from './twilio.js';
-
-const randomInterval = () => Math.floor(Math.random() * (120 - 60 + 1) + 60);
+import { getRandomIntervalMinutes, getRandomIntervalSeconds } from './utils.js';
 
 const checkAndRepeat = async () => {
   // check page for available goodies
 
-  const unavailable = true; //
+  const unavailable = true; // replace with page-specific logic
 
   if (unavailable) {
     console.log('Nothing available');
 
-    setTimeout(checkAndRepeat, 1000 * randomInterval());
+    setTimeout(checkAndRepeat, getRandomIntervalMinutes(10, 15));
 
     return;
   }
@@ -20,6 +19,8 @@ const checkAndRepeat = async () => {
   console.log('SUCCESS!!! WOAH!!!');
 
   sendSmsNotification();
+
+  // Keep chromium open so you can do your thing after you get the SMS.
 };
 
 // Start script here
@@ -38,13 +39,6 @@ const page = await browser.newPage();
 
 await page.goto(process.env.URL);
 
-console.log('hello world');
-
 // login if necessary, and navigate to page to be checked/refreshed
-//
-// checkAndRepeat();
 
-//  TODO:
-// 1. ts
-// 2. prettier
-// 3. non-tsc option?
+checkAndRepeat();
