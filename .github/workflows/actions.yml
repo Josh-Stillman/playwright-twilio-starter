@@ -1,0 +1,22 @@
+name: Lint & Typecheck
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Cache Node Modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+    - name: Install Node Modules
+      run: npm ci
+    - name: Lint
+      run: npm run lint
+    - name: Test
+      run: npm run typecheck
