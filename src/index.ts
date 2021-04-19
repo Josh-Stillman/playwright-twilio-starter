@@ -24,15 +24,23 @@ const checkAndRepeat = async () => {
 
 // Start script here
 
+if (!process.env.URL) {
+  console.error("missing URL environment variable");
+  process.exit(1);
+}
+
 const browser = await playwright.chromium.launch({headless: false, slowMo: 50});
 
 const page = await browser.newPage();
 
-await page.goto('');
+await page.goto(process.env.URL);
+
+console.log("hello world");
+
 
 // login if necessary, and navigate to page to be checked/refreshed
-
-checkAndRepeat();
+//
+// checkAndRepeat();
 
 
 //  TODO:
